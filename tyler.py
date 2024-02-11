@@ -36,7 +36,6 @@ class Controller:
       
       # Get image
       __, self.frame = self.vid.read()
-      time.sleep(1 / 30)
       self.frame = cv2.flip(self.frame, 1)
       self.frame = cv2.line(self.frame, (0, int(self.frame.shape[0] * .70)), (self.frame.shape[1], int(self.frame.shape[0] * .70)), (0, 255, 0), 1) 
       self.frame = cv2.line(self.frame, (0, int(self.frame.shape[0] * 0.30)), (self.frame.shape[1], int(self.frame.shape[0] * 0.30)), (255, 0, 0), 1)
@@ -44,7 +43,7 @@ class Controller:
           break
       
       # Label image
-      with mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.5, model_complexity=2) as pose:
+      with mp_pose.Pose(min_detection_confidence=0.5, model_complexity=0) as pose:
           results = pose.process(cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB))
       mp_drawing.draw_landmarks(
           self.frame,
@@ -55,21 +54,21 @@ class Controller:
       if results.pose_landmarks != None:
           # Is moving
           self.landmarks = results.pose_landmarks
-          l_x = self.landmarks.landmark[26].x
-          l_y = self.landmarks.landmark[26].y
+          l_x = self.landmarks.landmark[25].x
+          l_y = self.landmarks.landmark[25].y
 
-          r_x = self.landmarks.landmark[25].x
-          r_y = self.landmarks.landmark[25].y
+          r_x = self.landmarks.landmark[26].x
+          r_y = self.landmarks.landmark[26].y
 
           j_r = self.landmarks.landmark[20].y
           j_l = self.landmarks.landmark[21].y
 
-          if r_x > 0.5 and r_y < 0.70:
+          if r_x > 0.5  and (r_y < 0.70 or l_y < 0.70):
              self.right = True
           else:
              self.right = False
 
-          if l_x < 0.5 and l_y < 0.70:
+          if l_x < 0.5 and (l_y < 0.70 or r_y < 0.70):
              self.left = True
           else:
              self.left = False

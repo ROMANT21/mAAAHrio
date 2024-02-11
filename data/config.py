@@ -10,6 +10,8 @@ delta_time = None
 mario = None
 final_count_down = False
 
+motion_controls = {"left": False, "right": False, "jump": False}
+
 #Colors for level loading
 BLACK = (0, 0, 0, 255)
 RED = (255, 0, 0, 255)
@@ -34,7 +36,7 @@ TILE_SIZE = 48
 
 #Physics values
 ACCELERATION = 0
-MARIO_ACCELERATION = 0.0005
+MARIO_ACCELERATION = 0.001
 MAX_VEL = 0.35
 GRAVITY = 0.002
 MAX_JUMP_HEIGHT = 140

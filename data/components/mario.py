@@ -50,10 +50,10 @@ class Mario(Entity):
     def update(self):
         """Get input and perform actions"""
         if not self.freeze_input:
-            if c.keys[pg.K_a] and not c.keys[pg.K_d]:
+            if (c.keys[pg.K_a] and not c.keys[pg.K_d]) or c.motion_controls["left"]:
                 self.pressed_left = True
                 c.ACCELERATION = -c.MARIO_ACCELERATION
-            elif c.keys[pg.K_d] and not c.keys[pg.K_a]:
+            elif (c.keys[pg.K_d] and not c.keys[pg.K_a]) or c.motion_controls["right"]:
                 self.pressed_right = True
                 c.ACCELERATION = c.MARIO_ACCELERATION
             else:
@@ -64,11 +64,11 @@ class Mario(Entity):
             if not c.keys[pg.K_d]:
                 self.pressed_right = False
 
-            if c.keys[pg.K_SPACE] and not self.spacebar:
+            if (c.keys[pg.K_SPACE] and not self.spacebar) or c.motion_controls["jump"]:
                 self.spacebar = True
                 self.action_states.on_event('jump')
             
-            if not c.keys[pg.K_SPACE]:
+            if not c.keys[pg.K_SPACE] and not c.motion_controls["jump"]:
                 self.spacebar = False
 
             if c.keys[pg.K_s]:

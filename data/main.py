@@ -5,6 +5,9 @@ from . import sounds
 from .basetypes import Camera, Vector2, Rectangle, Digit_System
 import pygame as pg
 from .components import mario
+import cv2
+
+import time
 
 class Main():
     """Contains main loop and handles the game"""
@@ -159,11 +162,16 @@ class Main():
             return False
         return True
 
-    def main_loop(self):
+    def main_loop(self, controller):
         """Main game loop, updates and draws the level every frame"""
         while True:
             c.delta_time = c.clock.tick(60)
             c.keys = pg.key.get_pressed()
+
+            # reflect camera values
+            c.motion_controls["left"] = controller.left
+            c.motion_controls["right"] = controller.right
+            c.motion_controls["jump"] = controller.jump
 
             self.update_level()
             self.handle_digit_systems()
@@ -173,3 +181,4 @@ class Main():
                 break
 
             pg.display.update()
+        return True
